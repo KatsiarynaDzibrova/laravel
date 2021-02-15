@@ -16,11 +16,6 @@ class Recording extends Model
     private $title;
 
     /**
-     * @string
-     */
-    private $artist;
-
-    /**
      * @int
      */
     private $length;
@@ -46,6 +41,13 @@ class Recording extends Model
      * @string
      */
     private $annotation;
+
+    /**
+     * Get the artist associated with the user.
+     */
+    public function artist() {
+        return $this->hasOne(Artist::class);
+    }
 
     /**
      * @param string $key
