@@ -16,7 +16,7 @@ class CreateRecordingsTable extends Migration
         Schema::create('recordings', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('artist');
+            $table->unsignedBigInteger('artist');
             $table->foreign('artist')->references('id')->on('artists');
             $table->integer('length');
             $table->string('ISRC');
