@@ -40,7 +40,12 @@ class Artist extends Model
     /**
      * @string
      */
-    private $begin_end_dates;
+    private $begin_date;
+
+    /**
+     * @string
+     */
+    private $end_date;
 
     /**
      * @string
