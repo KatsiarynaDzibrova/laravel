@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,15 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Models\Recording;
+use App\Models\Artist;
 use App\Http\Controllers;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/random/{max}', Randomizer::class);
 
 Route::get('register', function () {
     return view('register');
 });
+
 Route::post('user/register', UserRegistration::class);
+
+Route::get('/all_recordings', function () {
+    $recordings = Recording::all();
+    $recordings->each(function($recording)
+    {
+        echo($recording . '<br>');
+    });
+});
