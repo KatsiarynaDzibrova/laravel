@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateArtistsTable extends Migration
@@ -20,13 +21,8 @@ class CreateArtistsTable extends Migration
             $table->string('type');
             $table->string('gender');
             $table->timestamp('begin_date');
-            $table->timestamp('end_date');
-            $table->string('IPI_code');
-            $table->string('ISNI_code');
-            $table->string('alias');
+            $table->timestamp('end_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('MBID');
-            $table->string('comment');
-            $table->string('annotation');
             $table->timestamps();
         });
     }
