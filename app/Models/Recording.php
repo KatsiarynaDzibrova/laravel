@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Recording extends Model
 {
+    protected $fillable = ['title', 'length', 'ISRC', 'MBID', 'comment',
+        'annotation','artist'];
+
     /**
      * @string
      */

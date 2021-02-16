@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Artist extends Model
 {
+    protected $fillable = ['name', 'sort_name', 'type', 'gender', 'area', 'begin_date', 'MBID', ];
+
     /**
      * @string
      */
@@ -38,12 +40,12 @@ class Artist extends Model
     private $area;
 
     /**
-     * @string
+     * @int
      */
     private $begin_date;
 
     /**
-     * @string
+     * @int
      */
     private $end_date;
 
@@ -100,4 +102,5 @@ class Artist extends Model
 
         return $this;
     }
+
 }
