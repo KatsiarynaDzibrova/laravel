@@ -75,4 +75,16 @@ class Recording extends Model
 
         return $this;
     }
+
+    public static function add_recording($recording, $artist) {
+        Recording::create([
+            'title' => $recording->title,
+            'length' => $recording->length,
+            'ISRC' => $recording->ISRC,
+            'MBID' => $recording['id'],
+            'comment' => $recording->comment,
+            'annotation' => $recording->annotation,
+            'artist' => $artist->id,
+        ]);
+    }
 }

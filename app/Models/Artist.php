@@ -103,4 +103,15 @@ class Artist extends Model
         return $this;
     }
 
+    public static function add_artist($artist) {
+        Artist::create([
+            'name' => $artist->name,
+            'sort_name' => $artist->{'sort-name'},
+            'type' => $artist['type'],
+            'gender' => $artist->gender,
+            'begin_date' => $artist->{'life-span'}->begin . '-01-01',
+            'MBID' => $artist['id'],
+        ]);
+    }
+
 }
