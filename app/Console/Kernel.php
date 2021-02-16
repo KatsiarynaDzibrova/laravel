@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\RecordingsGetter;
+use App\Models\Artist;
+use App\Models\Recording;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(new RecordingsGetter)->everyMinute();
     }
 
     /**
