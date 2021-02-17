@@ -85,7 +85,7 @@ class Artist extends Model
      */
     public function __get($key) {
         if (property_exists($this, $key)) {
-            return $this->$key;
+            return $this->attributes[$key];
         }
     }
 
@@ -97,7 +97,7 @@ class Artist extends Model
     public function __set($key, $value): Artist
     {
         if (property_exists($this, $key)) {
-            $this->$key = $value;
+            $this->attributes[$key] = $value;
         }
 
         return $this;

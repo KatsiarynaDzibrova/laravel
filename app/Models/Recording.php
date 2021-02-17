@@ -58,7 +58,7 @@ class Recording extends Model
      */
     public function __get($key) {
         if (property_exists($this, $key)) {
-            return $this->$key;
+            return $this->attributes[$key];
         }
     }
 
@@ -70,7 +70,7 @@ class Recording extends Model
     public function __set($key, $value): Recording
     {
         if (property_exists($this, $key)) {
-            $this->$key = $value;
+            $this->attributes[$key] = $value;
         }
 
         return $this;
