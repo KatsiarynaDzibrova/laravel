@@ -76,6 +76,11 @@ class Recording extends Model
         return $this;
     }
 
+    public function get_length_min(): float
+    {
+        return number_format((float) ($this->attributes['length']) / 60 / 1000, 2);
+    }
+
     public static function add_recording($recording, $artist) {
         Recording::create([
             'title' => $recording->title,
