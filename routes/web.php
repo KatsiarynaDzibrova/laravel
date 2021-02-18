@@ -32,5 +32,9 @@ Route::get('register', function () {
 Route::post('user/register', UserRegistration::class);
 
 Route::get('/all_recordings', function () {
-    return view('all_recordings', ['recordings' =>  Recording::all()]);
+    $recordings = Recording::all();
+    $recordings->each(function($recording)
+    {
+        echo($recording . '<br>');
+    });
 });
