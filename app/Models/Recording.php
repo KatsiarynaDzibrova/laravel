@@ -52,44 +52,20 @@ class Recording extends Model
         return $this->hasOne(Artist::class);
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function __get($key) {
-        if (property_exists($this, $key)) {
-            return $this->attributes[$key];
-        }
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($key, $value): Recording
-    {
-        if (property_exists($this, $key)) {
-            $this->attributes[$key] = $value;
-        }
-
-        return $this;
-    }
-
     public function get_length_min(): float
     {
         return number_format((float) ($this->attributes['length']) / 60 / 1000, 2);
     }
 
-    public static function add_recording($recording, $artist) {
-        Recording::create([
-            'title' => $recording->title,
-            'length' => $recording->length,
-            'ISRC' => $recording->ISRC,
+    public static function addRecording($recording, $artist_id) {
+        if (!array_key_exists('length', $recording)) {
+            $recording['length'] = NULL;
+        }
+        return Recording::create([
+            'title' => $recording['title'],
+            'length' => $recording['length'],
             'MBID' => $recording['id'],
-            'comment' => $recording->comment,
-            'annotation' => $recording->annotation,
-            'artist' => $artist->id,
+            'artist' => $artist_id,
         ]);
     }
 }
