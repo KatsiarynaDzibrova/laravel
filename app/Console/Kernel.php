@@ -2,12 +2,9 @@
 
 namespace App\Console;
 
-use App\Http\Controllers\RecordingsGetter;
-use App\Models\Artist;
-use App\Models\Recording;
+use App\Console\Commands\RetrieveRecordings;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        RetrieveRecordings::class
     ];
 
     /**
@@ -28,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(new RecordingsGetter)->everyMinute();
+        $schedule->command('recordings:daily')->daily();
     }
 
     /**
