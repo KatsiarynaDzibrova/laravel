@@ -19,9 +19,9 @@ class CreateArtistsTable extends Migration
             $table->string('name');
             $table->string('sort_name');
             $table->string('type');
-            $table->string('gender');
-            $table->timestamp('begin_date');
-            $table->timestamp('end_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('gender')->nullable();
+            $table->date('begin_date');
+            $table->date('end_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('MBID');
             $table->timestamps();
         });
