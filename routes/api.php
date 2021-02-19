@@ -21,3 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/recordings', [RecordingsController::class, 'getAllRecordings']);
 
+
+Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
+
