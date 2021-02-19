@@ -79,37 +79,26 @@ class Artist extends Model
      */
     private $annotation;
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function __get($key) {
-        if (property_exists($this, $key)) {
-            return $this->attributes[$key];
+    private static function formatDate ($date) {
+        if (strlen($date) == 4) {
+            return $date . '-01-01';
+        } else if (strlen($date) == 7) {
+            return $date . '-01';
+        } else {
+            return $date;
         }
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($key, $value): Artist
-    {
-        if (property_exists($this, $key)) {
-            $this->attributes[$key] = $value;
+    public static function addArtist($artist) {
+        if (!array_key_exists('gender', $artist)) {
+            $artist['gender'] = NULL;
         }
-
-        return $this;
-    }
-
-    public static function add_artist($artist) {
-        Artist::create([
-            'name' => $artist->name,
-            'sort_name' => $artist->{'sort-name'},
+        return Artist::create([
+            'name' => $artist['name'],
+            'sort_name' => $artist['sort-name'],
             'type' => $artist['type'],
-            'gender' => $artist->gender,
-            'begin_date' => $artist->{'life-span'}->begin . '-01-01',
+            'gender' => $artist['gender'],
+            'begin_date' => Artist::formatDate($artist['life-span']['begin']),
             'MBID' => $artist['id'],
         ]);
     }
