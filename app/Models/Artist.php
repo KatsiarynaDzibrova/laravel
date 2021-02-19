@@ -79,6 +79,11 @@ class Artist extends Model
      */
     private $annotation;
 
+    public function recording()
+    {
+        return $this->belongsTo(Recording::class);
+    }
+
     private static function formatDate ($date) {
         if (strlen($date) == 4) {
             return $date . '-01-01';
