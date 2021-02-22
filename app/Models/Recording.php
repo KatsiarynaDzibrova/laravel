@@ -52,11 +52,6 @@ class Recording extends Model
         return $this->hasOne(Artist::class);
     }
 
-    public function get_length_min(): float
-    {
-        return number_format((float) ($this->attributes['length']) / 60 / 1000, 2);
-    }
-
     public static function addRecording($recording, $artist_id) {
         if (!array_key_exists('length', $recording)) {
             $recording['length'] = NULL;
