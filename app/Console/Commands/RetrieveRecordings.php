@@ -58,7 +58,7 @@ class RetrieveRecordings extends Command
                 $artist = Artist::addArtist($artist_json);
                 $response_recordings = Http::withHeaders([
                     'User-Agent' => env('APP_NAME') . ' ( ' . env('CONTACT_MAIL') . ' )'
-                ])->get(self::API_BASE_URL . 'recording/?qury=artist:' . urlencode($artist_json['name']) . '&fmt=json');
+                ])->get(self::API_BASE_URL . 'recording/?query=artist:' . urlencode($artist_json['name']) . '&fmt=json');
                 $recordings = json_decode($response_recordings, true);
                 Recording::addMultipleRecordings($recordings['recordings'], $artist->id);
                 sleep(1);
