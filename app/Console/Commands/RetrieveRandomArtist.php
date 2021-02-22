@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Artist;
 use App\Models\Recording;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RetrieveRandomArtist extends Command
 {
@@ -32,6 +34,8 @@ class RetrieveRandomArtist extends Command
         parent::__construct();
     }
 
+    const API_BASE_URL = 'http://musicbrainz.org/ws/2/';
+
     /**
      * Execute the console command.
      *
@@ -39,24 +43,19 @@ class RetrieveRandomArtist extends Command
      */
     public function handle()
     {
-        $opts = [
-            'http' => [
-                'method' => "GET",
-                'header' => "Accept-language: en\r\n" .
-                    "User-agent: Base ( dzibrovak@famcs-steps.yaconnect.com )\r\n"
-            ]
-        ];
-        $context = stream_context_create($opts);
-
-        $artists = json_decode(file_get_contents(
-            'http://musicbrainz.org/ws/2/artist/?query=country:de&fmt=json', false, $context), true);
-        $artist_id = rand(0, count($artists['artists']));
-        $artist_json = $artists['artists'][$artist_id];
-        $artist = Artist::addArtist($artist_json);
-        $recordings = json_decode(file_get_contents(
-            'http://musicbrainz.org/ws/2/recording/?query=artist:' . urlencode($artist_json['name']) . '&fmt=json', false, $context), true);
-        foreach ($recordings['recordings'] as $recording) {
-            Recording::addRecording($recording, $artist->id);
+        try {
+            $response_artist = Http::withHeaders(['User-Agent' => env('APP_NAME') . ' ( ' . env('CONTACT_MAIL') . ' )'
+            ])->get(self::API_BASE_URL . 'artist/?query=country:de&fmt=json');
+            $artists = json_decode($response_artist, true);
+            $artist_id = rand(0, count($artists['artists']));
+            $artist_json = $artists['artists'][$artist_id];
+            $artist = Artist::addArtist($artist_json);
+            $response_recordings = Http::withHeaders(['User-Agent' => env('APP_NAME') . ' ( ' . env('CONTACT_MAIL') . ' )'
+            ])->get(self::API_BASE_URL . 'recording/?query=artist:' . urlencode($artist_json['name']) . '&fmt=json');
+            $recordings = json_decode($response_recordings, true);
+            Recording::addMultipleRecordings($recordings['recordings'], $artist->id);
+        } catch (\Exception $e) {
+            Log::error($e);
         }
         return 0;
     }
