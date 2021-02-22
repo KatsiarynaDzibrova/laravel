@@ -26,3 +26,5 @@ Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecord
 
 Route::post('/recordings', [RecordingsController::class, 'createRecording']);
 
+Route::put('/recordings/{recording}', [RecordingsController::class, 'updateRecording']);
+

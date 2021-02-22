@@ -32,4 +32,13 @@ class RecordingsController extends Controller
     public function createRecording(Request $request) {
         Recording::create($request->all());
     }
+
+    /**
+     * @param Request $request
+     * @param Recording $recording
+     */
+    public function updateRecording(Request $request, Recording $recording) {
+        $recording->update($request->all());
+        return response()->json($recording);
+    }
 }
