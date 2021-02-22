@@ -24,3 +24,5 @@ Route::get('/recordings', [RecordingsController::class, 'getAllRecordings']);
 
 Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
 
+Route::post('/recordings', [RecordingsController::class, 'createRecording']);
+
