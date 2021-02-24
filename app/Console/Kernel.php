@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\RetrieveRandomArtist;
 use App\Console\Commands\RetrieveRecordings;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -14,6 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        RetrieveRandomArtist::class,
         RetrieveRecordings::class
     ];
 
@@ -26,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('recordings:daily')->daily();
+        $schedule->command('artists:random')->hourly();
     }
 
     /**
