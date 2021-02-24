@@ -18,11 +18,8 @@ class CreateRecordingsTable extends Migration
             $table->string('title');
             $table->unsignedBigInteger('artist');
             $table->foreign('artist')->references('id')->on('artists');
-            $table->integer('length');
-            $table->string('ISRC');
+            $table->integer('length')->nullable();
             $table->string('MBID');
-            $table->string('comment');
-            $table->string('annotation');
             $table->timestamps();
         });
     }

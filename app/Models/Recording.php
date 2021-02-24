@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Recording extends Model
 {
+    protected $fillable = ['title', 'length', 'ISRC', 'MBID', 'comment',
+        'annotation','artist'];
+
     /**
      * @string
      */
@@ -49,27 +52,30 @@ class Recording extends Model
         return $this->hasOne(Artist::class);
     }
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function __get($key) {
-        if (property_exists($this, $key)) {
-            return $this->$key;
-        }
+    private static function recordingDataRetrieve($recording, $artist_id) {
+        return [
+            'title' => $recording['title'],
+            'length' => $recording['length'],
+            'MBID' => $recording['id'],
+            'artist' => $artist_id,
+        ];
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($key, $value): Recording
-    {
-        if (property_exists($this, $key)) {
-            $this->$key = $value;
+    public static function addRecording($recording, $artist_id) {
+        if (!array_key_exists('length', $recording)) {
+            $recording['length'] = NULL;
         }
+        return Recording::create(self::recordingDataRetrieve($recording, $artist_id));
+    }
 
-        return $this;
+    public static function addMultipleRecordings($recordings, $artist_id) {
+        $recordings_data = [];
+        foreach ($recordings as $recording) {
+            if (!array_key_exists('length', $recording)) {
+                $recording['length'] = NULL;
+            }
+            array_push($recordings_data, self::recordingDataRetrieve($recording, $artist_id));
+        }
+        return Recording::insert($recordings_data);
     }
 }

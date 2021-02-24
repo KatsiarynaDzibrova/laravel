@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers;
-
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::get('/random/{max}', Randomizer::class);
 
 Route::get('register', function () {
     return view('register');
 });
+
 Route::post('user/register', UserRegistration::class);

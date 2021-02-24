@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Artist extends Model
 {
+    protected $fillable = ['name', 'sort_name', 'type', 'gender', 'area', 'begin_date', 'MBID', ];
+
     /**
      * @string
      */
@@ -38,12 +40,12 @@ class Artist extends Model
     private $area;
 
     /**
-     * @string
+     * @int
      */
     private $begin_date;
 
     /**
-     * @string
+     * @int
      */
     private $end_date;
 
@@ -77,27 +79,33 @@ class Artist extends Model
      */
     private $annotation;
 
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function __get($key) {
-        if (property_exists($this, $key)) {
-            return $this->$key;
-        }
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($key, $value): Artist
+    public function recording()
     {
-        if (property_exists($this, $key)) {
-            $this->$key = $value;
-        }
-
-        return $this;
+        return $this->belongsTo(Recording::class);
     }
+
+    private static function formatDate ($date) {
+        if (strlen($date) == 4) {
+            return $date . '-01-01';
+        } else if (strlen($date) == 7) {
+            return $date . '-01';
+        } else {
+            return $date;
+        }
+    }
+
+    public static function addArtist($artist) {
+        if (!array_key_exists('gender', $artist)) {
+            $artist['gender'] = NULL;
+        }
+        return Artist::create([
+            'name' => $artist['name'],
+            'sort_name' => $artist['sort-name'],
+            'type' => $artist['type'],
+            'gender' => $artist['gender'],
+            'begin_date' => Artist::formatDate($artist['life-span']['begin']),
+            'MBID' => $artist['id'],
+        ]);
+    }
+
 }
