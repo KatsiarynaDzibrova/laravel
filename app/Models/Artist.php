@@ -107,4 +107,5 @@ class Artist extends Model
             'MBID' => $artist['id'],
         ]);
     }
+
 }
