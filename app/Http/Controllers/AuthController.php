@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class AuthController extends Controller
 {
     /**
@@ -11,7 +14,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -60,6 +63,22 @@ class AuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    public function register()
+    {
+        if (User::where('email', request('email'))->exists())
+        {
+            return response()->json(['error' => 'email already exists'], 409);
+        }
+
+        User::create([
+            'username' => request('username'),
+            'email' => request('email'),
+            'password' => Hash::make(request('password')),
+        ]);
+
+        return $this->login();
     }
 
     /**
