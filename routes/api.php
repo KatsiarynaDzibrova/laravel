@@ -43,6 +43,7 @@ Route::group([
     Route::post('register',  'AuthController@register');
     Route::view('register', 'register');
     Route::post('reset', 'AuthController@reset');
+    Route::view('reset', 'reset');
     Route::post('me', 'AuthController@me');
 
 });

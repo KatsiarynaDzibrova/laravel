@@ -98,6 +98,9 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function reset() {
+        request()->validate([
+            'email' => 'required|unique:users',
+        ]);
         if (!User::where('email', request('email'))->exists())
         {
             return response()->json(['error' => 'no user with such email'], 404);
