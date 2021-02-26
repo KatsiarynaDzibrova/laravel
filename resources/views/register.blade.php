@@ -1,14 +1,18 @@
 <html>
     <body>
-        <h1>Hello</h1>
+        <h1>Register</h1>
 
-        <form action = "/user/register" method = "post">
+        <form action = "/api/auth/register" method = "post">
             <input type = "hidden" name = "_token" value = "<?php echo csrf_token() ?>">
 
             <table>
                 <tr>
-                    <td>Name</td>
-                    <td><input type = "text" name = "name" /></td>
+                    <td>Username</td>
+                    <td><input type = "text" name = "username" /></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td><input type = "text" name = "email" /></td>
                 </tr>
                 <tr>
                     <td>Password</td>
