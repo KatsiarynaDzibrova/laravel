@@ -1,4 +1,9 @@
 <html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/materialize.css" rel="stylesheet">
+</head>
     <body>
         <h1>Register</h1>
 
@@ -16,7 +21,7 @@
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type = "text" name = "password" /></td>
+                    <td><input type = "password" name = "password" /></td>
                 </tr>
                 <tr>
                     <td colspan = "2" align = "center">
@@ -30,7 +35,7 @@
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li class="red-text">{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
