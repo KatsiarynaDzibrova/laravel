@@ -29,6 +29,7 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        User::where('email', request('email'))->update(['last_login_at' => \Carbon\Carbon::now()]);
 
         return $this->respondWithToken($token);
     }
