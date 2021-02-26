@@ -14,7 +14,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'reset']]);
     }
 
     /**
@@ -66,6 +66,11 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
+    /**
+     * Register new user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register()
     {
         if (User::where('email', request('email'))->exists())
@@ -80,6 +85,22 @@ class AuthController extends Controller
         ]);
 
         return $this->login();
+    }
+
+    /**
+     * Reset users password.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reset() {
+        if (!User::where('email', request('email'))->exists())
+        {
+            return response()->json(['error' => 'no user with such email'], 404);
+        }
+
+        // TODO: send notification to email
+
+        return response()->json(['message' => 'Check your email.']);
     }
 
     /**
