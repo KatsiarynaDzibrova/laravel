@@ -19,9 +19,3 @@ Route::get('/', function () {
 
 
 Route::get('/random/{max}', Randomizer::class);
-
-Route::get('register', function () {
-    return view('register');
-});
-
-Route::post('user/register', UserRegistration::class);
