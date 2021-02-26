@@ -73,10 +73,11 @@ class AuthController extends Controller
      */
     public function register()
     {
-        if (User::where('email', request('email'))->exists())
-        {
-            return response()->json(['error' => 'email already exists'], 409);
-        }
+        request()->validate([
+            'username' => 'required|max:255',
+            'email' => 'required|unique:users',
+            'password' => 'required|min:4',
+        ]);
 
         User::create([
             'username' => request('username'),
