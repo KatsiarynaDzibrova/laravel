@@ -38,13 +38,10 @@ Route::group([
 
     Route::post('login', [ 'as' => 'login', 'uses' => 'AuthController@login']);
     Route::view('login', 'login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
     Route::post('register',  'AuthController@register');
     Route::view('register', 'register');
     Route::post('reset', 'AuthController@reset');
     Route::view('reset', 'reset');
-    Route::post('me', 'AuthController@me');
 
 });
 

@@ -25,10 +25,15 @@ class AuthController extends Controller
     public function login()
     {
         request()->validate([
-            'email' => 'required|unique:users',
+            'email' => 'required',
             'password' => 'required|min:4',
         ]);
         $credentials = request(['email', 'password']);
+
+        if (!User::where('email', request('email'))->exists())
+        {
+            return response()->json(['error' => 'no user with such email'], 404);
+        }
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -36,16 +41,6 @@ class AuthController extends Controller
         User::where('email', request('email'))->update(['last_login_at' => \Carbon\Carbon::now()]);
 
         return $this->respondWithToken($token);
-    }
-
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
     }
 
     /**
@@ -61,16 +56,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    /**
      * Register new user.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -79,9 +64,13 @@ class AuthController extends Controller
     {
         request()->validate([
             'username' => 'required|max:255',
-            'email' => 'required|unique:users',
+            'email' => 'required|unique:users|regex:/^.+@.+$/i',
             'password' => 'required|min:4',
         ]);
+        if (User::where('email', request('email'))->exists())
+        {
+            return response()->json(['error' => 'user with such email already exists'], 409);
+        }
 
         User::create([
             'username' => request('username'),
@@ -99,7 +88,7 @@ class AuthController extends Controller
      */
     public function reset() {
         request()->validate([
-            'email' => 'required|unique:users',
+            'email' => 'required',
         ]);
         if (!User::where('email', request('email'))->exists())
         {
