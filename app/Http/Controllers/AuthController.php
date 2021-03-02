@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'verify', 'register', 'reset', 'reset_password']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'reset', 'reset_password', 'verify']]);
     }
 
     /**
@@ -150,10 +150,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function verify() {
-        echo request();
+    public function verify($id) {
+        User::find($id)->update(['email_verified_at' => \Carbon\Carbon::now()]);
 
-        return response()->json(['message' => 'Done']);
+        return response()->json(['message' => 'Mail verified']);
     }
 
     /**
