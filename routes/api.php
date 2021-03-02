@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\RecordingsController;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +44,16 @@ Route::group([
     Route::view('login', 'login');
     Route::post('register',  'AuthController@register');
     Route::view('register', 'register');
-    Route::post('reset', 'AuthController@reset');
-    Route::view('reset', 'reset');
+    Route::post('reset', 'AuthController@reset')->middleware('guest')->name('password.email');
+    Route::get('reset', function () {
+        return view('reset');
+    })->middleware('guest')->name('password.request');
+
+    Route::get('/reset-password/{token}', function ($token) {
+        return view('reset-password', ['token' => $token]);
+    })->middleware('guest')->name('password.reset');
+
+    Route::post('/reset-password', 'AuthController@reset_password'
+    )->middleware('guest')->name('password.update');
 
 });
-
