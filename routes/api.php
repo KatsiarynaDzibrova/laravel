@@ -1,12 +1,8 @@
 <?php
 
 use App\Http\Controllers\RecordingsController;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/recordings', [RecordingsController::class, 'getAllRecordings']);
+Route::get('/recordings', [RecordingsController::class, 'getAllRecordings'])->middleware('verified');
 
 
 Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
@@ -56,4 +52,9 @@ Route::group([
     Route::post('/reset-password', 'AuthController@reset_password'
     )->middleware('guest')->name('password.update');
 
+    Route::get('/verify', function () {
+        return view('verify-email');
+    })->middleware('auth')->name('verification.notice');
+
+    Route::get('/verify/{id}/{hash}', 'AuthController@verify')->name('verification.verify');
 });

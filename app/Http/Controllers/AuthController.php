@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'reset', 'reset_password']]);
+        $this->middleware('auth:api', ['except' => ['login', 'verify', 'register', 'reset', 'reset_password']]);
     }
 
     /**
@@ -143,6 +143,17 @@ class AuthController extends Controller
             : back()->withErrors(['email' => [__($status)]]);
 
         return response()->json(['message' => $message]);
+    }
+
+    /**
+     * Verify users e-mail.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify() {
+        echo request();
+
+        return response()->json(['message' => 'Done']);
     }
 
     /**
