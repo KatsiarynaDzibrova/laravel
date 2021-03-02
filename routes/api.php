@@ -20,7 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/recordings', [RecordingsController::class, 'getAllRecordings'])->middleware('verified');
+Route::get('/recordings', function(){return view('recordings', ['token' => auth()->user()->getRememberToken()]);});
+Route::get('/get-recordings', [RecordingsController::class, 'getAllRecordings'])->middleware('verified');
 
 
 Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
