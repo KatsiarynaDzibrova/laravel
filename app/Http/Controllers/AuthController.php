@@ -28,14 +28,9 @@ class AuthController extends Controller
      */
     public function login()
     {
-        request()->validate([
-            'email' => 'required',
-            'password' => 'required|min:4',
-        ]);
         $credentials = request(['email', 'password']);
 
-        if (!User::where('email', request('email'))->exists())
-        {
+        if (!User::where('email', request('email'))->exists()) {
             return response()->json(['error' => 'no user with such email'], 404);
         }
 
@@ -66,14 +61,12 @@ class AuthController extends Controller
      */
     public function register()
     {
-        request()->validate([
-            'username' => 'required|max:255',
-            'email' => 'required|unique:users|regex:/^.+@.+$/i',
-            'password' => 'required|min:4',
-        ]);
-        if (User::where('email', request('email'))->exists())
-        {
+        if (User::where('email', request('email'))->exists()) {
             return response()->json(['error' => 'user with such email already exists'], 409);
+        }
+
+        if (strlen(request('password')) < 8) {
+            return response()->json(['error' => 'password must be at least 8 symbols long'], 401);
         }
 
         $user = User::create([
@@ -92,12 +85,9 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reset() {
-        request()->validate([
-            'email' => 'required',
-        ]);
-        if (!User::where('email', request('email'))->exists())
-        {
+    public function reset()
+    {
+        if (!User::where('email', request('email'))->exists()) {
             return response()->json(['error' => 'no user with such email'], 404);
         }
 
@@ -117,17 +107,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function reset_password() {
+    public function reset_password()
+    {
         $request = request();
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:4|confirmed',
-        ]);
 
         $status = Password::reset(
             request()->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) use ($request) {
+            function ($user, $password) use ($request)
+            {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->save();
@@ -150,7 +137,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function verify($id) {
+    public function verify($id)
+    {
         User::find($id)->update(['email_verified_at' => \Carbon\Carbon::now()]);
 
         return response()->json(['message' => 'Mail verified']);
