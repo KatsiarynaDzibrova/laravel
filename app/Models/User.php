@@ -15,15 +15,6 @@ class User extends Authenticatable implements JWTSubject, CanResetPassword, Must
     protected $fillable = ['username',  'email', 'password', 'last_login_at', 'email_verified_at'];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
