@@ -34,7 +34,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'no user with such email'], 404);
         }
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         User::where('email', request('email'))->update(['last_login_at' => \Carbon\Carbon::now()]);
@@ -109,11 +109,9 @@ class AuthController extends Controller
      */
     public function reset_password()
     {
-        $request = request();
-
         $status = Password::reset(
             request()->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) use ($request)
+            function ($user, $password)
             {
                 $user->forceFill([
                     'password' => Hash::make($password)
