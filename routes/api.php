@@ -39,28 +39,4 @@ Route::group([
 ], function ($router)
 {
     Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
-
-    Route::post('register', 'AuthController@register');
-
-    Route::post('reset', 'AuthController@reset')
-        ->middleware('guest')
-        ->name('password.email');
-
-    Route::get('/reset-password/{token}', function ($token) {
-        return view('reset-password', ['token' => $token]);
-    })
-        ->middleware('guest')
-        ->name('password.reset');
-
-    Route::post('/reset-password', 'AuthController@reset_password')
-        ->middleware('guest')
-        ->name('password.update');
-
-    Route::get('/verify', function () {
-        return view('verify-email');
-    })
-        ->middleware('auth')
-        ->name('verification.notice');
-
-    Route::get('/verify/{id}/{hash}', 'AuthController@verify')->name('verification.verify');
 });
