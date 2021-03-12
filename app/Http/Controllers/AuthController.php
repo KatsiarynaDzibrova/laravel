@@ -29,10 +29,10 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-
-        if (!User::where('email', request('email'))->exists()) {
-            return response()->json(['error' => 'no user with such email'], 404);
-        }
+//
+//        if (!User::where('email', request('email'))->exists()) {
+//            return response()->json(['error' => 'no user with such email'], 404);
+//        }
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
