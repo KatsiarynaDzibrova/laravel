@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,13 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
+})->name('home');
 
 Route::get('/random/{max}', Randomizer::class);
 
-Route::get('register', function () {
-    return view('register');
-});
+Auth::routes(['verify' => true]);
 
-Route::post('user/register', UserRegistration::class);

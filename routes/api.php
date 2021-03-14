@@ -15,16 +15,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/recordings', [RecordingsController::class, 'getAllRecordings']);
+Route::group([
+    'middleware' => 'auth',
+], function ($router)
+{
+    Route::get('/recordings', [RecordingsController::class, 'getAllRecordings']);
 
+    Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
 
-Route::get('/recordings/artist/{name}', [RecordingsController::class, 'getRecordingByArtist']);
+    Route::post('/recordings', [RecordingsController::class, 'createRecording']);
 
-Route::post('/recordings', [RecordingsController::class, 'createRecording']);
+    Route::put('/recordings/{recording}', [RecordingsController::class, 'updateRecording']);
+}
+);
 
-Route::put('/recordings/{recording}', [RecordingsController::class, 'updateRecording']);
-
+Route::group([
+    'prefix' => 'auth'
+], function ($router)
+{
+    Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
+});
